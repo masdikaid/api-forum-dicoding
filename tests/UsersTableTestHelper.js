@@ -5,7 +5,6 @@ const UsersTableTestHelper = {
     async addUser({
                       id = 'user-123', username = 'dicoding', password = 'secret', fullname = 'Dicoding Indonesia',
                   }) {
-        console.log('addUser', id, username, password, fullname)
         const query = {
             text: 'INSERT INTO users VALUES($1, $2, $3, $4)',
             values: [id, username, password, fullname],
