@@ -1,32 +1,30 @@
 /* eslint-disable camelcase */
 
-const {PgLiteral} = require("node-pg-migrate");
-
 exports.up = pgm => {
     pgm.createTable('comments', {
         id: {
-        type: 'VARCHAR(50)',
-        primaryKey: true,
+            type: 'VARCHAR(50)',
+            primaryKey: true,
         },
         content: {
-        type: 'TEXT',
-        notNull: true,
+            type: 'TEXT',
+            notNull: true,
         },
         date: {
-        type: 'TIMESTAMP',
-        notNull: true,
-        default: pgm.func('NOW()')
+            type: 'TIMESTAMP',
+            notNull: true,
+            default: pgm.func('NOW()')
         },
         owner: {
-        type: 'VARCHAR(50)',
-        notNull: true,
+            type: 'VARCHAR(50)',
+            notNull: true,
         },
         thread_id: {
-        type: 'VARCHAR(50)',
-        notNull: true,
+            type: 'VARCHAR(50)',
+            notNull: true,
         },
         deleted_at: {
-        type: 'TIMESTAMP',
+            type: 'TIMESTAMP',
         }
     });
 

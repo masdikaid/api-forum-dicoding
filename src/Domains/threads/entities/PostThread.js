@@ -8,7 +8,7 @@ class PostThread {
         this.body = body;
     }
 
-    _verifyPayload({title, body, owner}) {
+    _verifyPayload({title, body}) {
         if (!title || !body) {
             throw new Error('POST_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
         }
