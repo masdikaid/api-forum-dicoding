@@ -59,4 +59,18 @@ describe('ThreadRepositoryPostgres', () => {
             }));
         });
     });
+
+    describe('verifyThread function', () => {
+        it('should throw error when thread not found', async () => {
+            const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+            await expect(threadRepositoryPostgres.verifyThread('thread-123')).rejects.toThrowError('THREAD_REPOSITORY.NOT_FOUND');
+        });
+
+        it('should not throw error when thread found', async () => {
+            await UserTableTestHelper.addUser({id: THREAD_DATA.owner});
+            await ThreadsTableTestHelper.postThread(THREAD_DATA);
+            const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+            await expect(threadRepositoryPostgres.verifyThread('thread-123')).resolves.not.toThrowError('THREAD_REPOSITORY.NOT_FOUND');
+        });
+    });
 });

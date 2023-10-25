@@ -6,12 +6,14 @@ const createServer = require("../createServer");
 const container = require("../../container");
 const ServerTestHelper = require("../../../../tests/ServerTestHelper");
 
-const UserData = {
-    id: 'user-123',
-    username: 'dicoding',
-}
 
 describe('/threads endpoint', () => {
+
+    const UserData = {
+        id: 'user-123',
+        username: 'dicoding',
+    }
+
     afterAll(async () => {
         await pool.end();
     });

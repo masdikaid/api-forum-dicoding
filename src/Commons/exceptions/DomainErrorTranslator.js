@@ -1,4 +1,6 @@
 const InvariantError = require('./InvariantError');
+const ClientError = require("./ClientError");
+const NotFoundError = require("./NotFoundError");
 
 const DomainErrorTranslator = {
     translate(error) {
@@ -20,6 +22,9 @@ DomainErrorTranslator._directories = {
     'POST_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat thread baru karena properti yang dibutuhkan tidak ada'),
     'POST_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat thread baru karena tipe data tidak sesuai'),
     'POST_THREAD.TITLE_LIMIT_CHAR': new InvariantError('tidak dapat membuat thread baru karena karakter title melebihi batas limit'),
+    'THREAD_REPOSITORY.NOT_FOUND': new NotFoundError('thread tidak ditemukan'),
+    'ADD_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('gagal menambahkan komentar. Mohon isi konten komentar'),
+    'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('gagal menambahkan komentar karena tipe data tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;

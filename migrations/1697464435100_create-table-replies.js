@@ -3,28 +3,28 @@
 exports.up = pgm => {
     pgm.createTable('replies', {
         id: {
-        type: 'VARCHAR(50)',
-        primaryKey: true,
+            type: 'VARCHAR(50)',
+            primaryKey: true,
         },
         content: {
-        type: 'TEXT',
-        notNull: true,
-        },
-        date: {
-        type: 'TIMESTAMP',
-        notNull: true,
-        default: pgm.func('NOW()')
+            type: 'TEXT',
+            notNull: true,
         },
         owner: {
-        type: 'VARCHAR(50)',
-        notNull: true,
+            type: 'VARCHAR(50)',
+            notNull: true,
         },
         comment_id: {
-        type: 'VARCHAR(50)',
-        notNull: true,
+            type: 'VARCHAR(50)',
+            notNull: true,
         },
         deleted_at: {
-        type: 'TIMESTAMP',
+            type: 'TIMESTAMP',
+        },
+        date: {
+            type: 'TIMESTAMP',
+            notNull: true,
+            default: pgm.func('NOW()')
         }
     });
 

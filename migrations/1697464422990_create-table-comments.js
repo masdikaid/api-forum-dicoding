@@ -10,11 +10,6 @@ exports.up = pgm => {
             type: 'TEXT',
             notNull: true,
         },
-        date: {
-            type: 'TIMESTAMP',
-            notNull: true,
-            default: pgm.func('NOW()')
-        },
         owner: {
             type: 'VARCHAR(50)',
             notNull: true,
@@ -25,6 +20,11 @@ exports.up = pgm => {
         },
         deleted_at: {
             type: 'TIMESTAMP',
+        },
+        date: {
+            type: 'TIMESTAMP',
+            notNull: true,
+            default: pgm.func('NOW()')
         }
     });
 

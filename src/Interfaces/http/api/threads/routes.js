@@ -6,6 +6,14 @@ const routes = (handler) => ([
         options: {
             auth: 'forumapi_jwt',
         }
+    },
+    {
+        method: 'POST',
+        path: '/threads/{threadId}/comments',
+        handler: handler.addCommentHandler,
+        options: {
+            auth: 'forumapi_jwt',
+        }
     }
 ]);
 

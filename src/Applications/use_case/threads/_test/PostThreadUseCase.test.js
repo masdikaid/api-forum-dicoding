@@ -12,10 +12,10 @@ describe('PostThreadUseCase', () => {
             owner: 'user-123',
         };
 
-        const useCasePayload = new PostThread({
+        const useCasePayload = {
             title: ThreadData.title,
             body: ThreadData.body,
-        });
+        }
 
         const mockPostedThread = new PostedThread({
             id: ThreadData.id,
@@ -33,15 +33,12 @@ describe('PostThreadUseCase', () => {
 
         const registeredThread = await postThreadUseCase.execute(useCasePayload, ThreadData.owner);
 
+        expect(mockThreadRepository.postThread).toBeCalledWith(useCasePayload, ThreadData.owner);
+
         expect(registeredThread).toStrictEqual(new PostedThread({
             id: ThreadData.id,
             title: ThreadData.title,
             owner: ThreadData.owner,
         }));
-
-        expect(mockThreadRepository.postThread).toBeCalledWith(new PostThread({
-            title: ThreadData.title,
-            body: ThreadData.body,
-        }), ThreadData.owner);
     });
 });
