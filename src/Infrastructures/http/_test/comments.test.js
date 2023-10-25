@@ -6,6 +6,7 @@ const AuthenticationsTableTestHelper = require("../../../../tests/Authentication
 const pool = require("../../database/postgres/pool");
 const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
 const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
+
 describe('when POST /comments', () => {
 
     const UserData = {
@@ -20,11 +21,13 @@ describe('when POST /comments', () => {
     }
 
     let accessToken;
+    let server;
 
     beforeAll(async () => {
         await UserTableTestHelper.addUser(UserData);
         await ThreadsTableTestHelper.postThread(ThreadData);
         accessToken = await ServerTestHelper.login(UserData);
+        server = await createServer(container);
     });
 
     afterEach(async () => {
@@ -35,7 +38,6 @@ describe('when POST /comments', () => {
         await UserTableTestHelper.cleanTable();
         await AuthenticationsTableTestHelper.cleanTable();
         await ThreadsTableTestHelper.cleanTable();
-        pool.end();
     });
 
     it('should response 201 and persisted comment', async () => {
@@ -43,7 +45,6 @@ describe('when POST /comments', () => {
             content: 'secret',
         };
 
-        const server = await createServer(container);
         const response = await server.inject({
             method: 'POST',
             url: `/threads/${ThreadData.id}/comments`,
@@ -60,7 +61,6 @@ describe('when POST /comments', () => {
 
     it('should response 400 when request payload not contain needed property', async () => {
         const requestPayload = {};
-        const server = await createServer(container);
         const response = await server.inject({
             method: 'POST',
             url: `/threads/${ThreadData.id}/comments`,
@@ -81,7 +81,6 @@ describe('when POST /comments', () => {
             content: 123,
         };
 
-        const server = await createServer(container);
         const response = await server.inject({
             method: 'POST',
             url: `/threads/${ThreadData.id}/comments`,
@@ -103,7 +102,6 @@ describe('when POST /comments', () => {
             content: 'secret',
         };
 
-        const server = await createServer(container);
         const response = await server.inject({
             method: 'POST',
             url: `/threads/thread-321/comments`,
@@ -124,7 +122,6 @@ describe('when POST /comments', () => {
             content: 'secret',
         };
 
-        const server = await createServer(container);
         const response = await server.inject({
             method: 'POST',
             url: `/threads/${ThreadData.id}/comments`,
@@ -135,5 +132,99 @@ describe('when POST /comments', () => {
         expect(response.statusCode).toEqual(401);
         expect(responseJson.error).toEqual('Unauthorized');
         expect(responseJson.message).toEqual('Missing authentication');
+    });
+});
+
+describe('when DELETE /comments/{commentId}', () => {
+
+    const TEST_DATA = {
+        title: 'dicoding',
+        body: 'secret',
+        owner: 'user-123',
+        threadId: 'thread-123',
+        commentId: 'comment-123',
+        content: 'secret',
+    }
+
+    let accessToken;
+    let server;
+
+    beforeAll(async () => {
+        await UserTableTestHelper.addUser({id: TEST_DATA.owner});
+        await ThreadsTableTestHelper.postThread({id: TEST_DATA.threadId, body: TEST_DATA.body, owner: TEST_DATA.owner});
+        accessToken = await ServerTestHelper.login({id: TEST_DATA.owner});
+        server = await createServer(container);
+    });
+
+    afterEach(async () => {
+        await CommentsTableTestHelper.cleanTable();
+    });
+
+    afterAll(async () => {
+        await UserTableTestHelper.cleanTable();
+        await AuthenticationsTableTestHelper.cleanTable();
+        await ThreadsTableTestHelper.cleanTable();
+        await pool.end();
+    });
+
+    it('should response 200 and delete comment', async () => {
+        await CommentsTableTestHelper.addComment({
+            id: TEST_DATA.commentId,
+            threadId: TEST_DATA.threadId,
+            owner: TEST_DATA.owner
+        });
+        const response = await server.inject({
+            method: 'DELETE',
+            url: `/threads/${TEST_DATA.threadId}/comments/${TEST_DATA.commentId}`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            }
+        });
+
+        const responseJson = JSON.parse(response.payload);
+        expect(response.statusCode).toEqual(200);
+        expect(responseJson.status).toEqual('success');
+    });
+
+    it('should response 403 when request from other user', async () => {
+        const otherUser = {
+            id: 'user-321',
+            username: 'dicoding 2',
+        }
+        await UserTableTestHelper.addUser(otherUser);
+
+        await CommentsTableTestHelper.addComment({
+            id: TEST_DATA.commentId,
+            threadId: TEST_DATA.threadId,
+            owner: otherUser.id
+        });
+
+        const response = await server.inject({
+            method: 'DELETE',
+            url: `/threads/${TEST_DATA.threadId}/comments/${TEST_DATA.commentId}`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            }
+        });
+
+        const responseJson = JSON.parse(response.payload);
+        expect(response.statusCode).toEqual(403);
+        expect(responseJson.status).toEqual('fail');
+        expect(responseJson.message).toEqual('anda tidak berhak mengakses resource ini');
+    });
+
+    it('should response 404 when comment not found', async () => {
+        const response = await server.inject({
+            method: 'DELETE',
+            url: `/threads/${TEST_DATA.threadId}/comments/${TEST_DATA.commentId}`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            }
+        });
+
+        const responseJson = JSON.parse(response.payload);
+        expect(response.statusCode).toEqual(404);
+        expect(responseJson.status).toEqual('fail');
+        expect(responseJson.message).toEqual('komentar tidak ditemukan');
     });
 });

@@ -1,6 +1,7 @@
 const InvariantError = require('./InvariantError');
 const ClientError = require("./ClientError");
 const NotFoundError = require("./NotFoundError");
+const AuthorizationError = require("./AuthorizationError");
 
 const DomainErrorTranslator = {
     translate(error) {
@@ -25,6 +26,8 @@ DomainErrorTranslator._directories = {
     'THREAD_REPOSITORY.NOT_FOUND': new NotFoundError('thread tidak ditemukan'),
     'ADD_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('gagal menambahkan komentar. Mohon isi konten komentar'),
     'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('gagal menambahkan komentar karena tipe data tidak sesuai'),
+    'VERIFY_COMMENT.NOT_FOUND': new NotFoundError('komentar tidak ditemukan'),
+    'VERIFY_COMMENT.OWNER_NOT_MATCH': new AuthorizationError('anda tidak berhak mengakses resource ini'),
 };
 
 module.exports = DomainErrorTranslator;
