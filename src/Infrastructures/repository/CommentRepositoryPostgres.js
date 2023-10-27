@@ -46,6 +46,18 @@ class CommentRepositoryPostgres extends CommentRepository {
         }
     }
 
+    async verifyComment(commentId) {
+        const query = {
+            text: 'SELECT id FROM comments WHERE id = $1',
+            values: [commentId],
+        };
+
+        const result = await this._pool.query(query);
+        if (!result.rowCount) {
+            throw new Error('VERIFY_COMMENT.NOT_FOUND');
+        }
+    }
+
     async deleteComment(commentId) {
         const query = {
             text: 'UPDATE comments SET deleted_at = NOW() WHERE id = $1',

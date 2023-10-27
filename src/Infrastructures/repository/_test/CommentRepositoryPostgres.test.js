@@ -73,6 +73,21 @@ describe('CommentRepositoryPostgres', () => {
         });
     });
 
+    describe('verify comment', () => {
+        it('should throw error when comment not found', async () => {
+            const fakeIdGenerator = () => '123';
+            const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+            await expect(commentRepositoryPostgres.verifyComment('comment-321')).rejects.toThrowError('VERIFY_COMMENT.NOT_FOUND');
+        });
+
+        it('should not throw error when comment found', async () => {
+            const fakeIdGenerator = () => '123';
+            const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+            await CommentsTableTestHelper.addComment(TEST_DATA);
+            await expect(commentRepositoryPostgres.verifyComment(TEST_DATA.id)).resolves.not.toThrowError('VERIFY_COMMENT.NOT_FOUND');
+        });
+    });
+
     describe('delete comment', () => {
         it('should soft delete comment', async () => {
             const fakeIdGenerator = () => '123';

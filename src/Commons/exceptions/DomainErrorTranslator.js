@@ -28,6 +28,10 @@ DomainErrorTranslator._directories = {
     'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('gagal menambahkan komentar karena tipe data tidak sesuai'),
     'VERIFY_COMMENT.NOT_FOUND': new NotFoundError('komentar tidak ditemukan'),
     'VERIFY_COMMENT.OWNER_NOT_MATCH': new AuthorizationError('anda tidak berhak mengakses resource ini'),
+    'ADD_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('gagal menambahkan balasan. Mohon isi konten balasan'),
+    'ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('gagal menambahkan balasan karena tipe data tidak sesuai'),
+    'VERIFY_REPLY.NOT_FOUND': new NotFoundError('balasan tidak ditemukan'),
+    'VERIFY_REPLY.OWNER_NOT_MATCH': new AuthorizationError('anda tidak berhak mengakses resource ini'),
 };
 
 module.exports = DomainErrorTranslator;
