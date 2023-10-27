@@ -1,6 +1,7 @@
 const PostThreadUseCase = require("../../../../Applications/use_case/threads/PostThreadUseCase");
 const AddCommentUseCase = require("../../../../Applications/use_case/threads/AddCommentUseCase");
 const DeleteCommentUseCase = require("../../../../Applications/use_case/threads/DeleteCommentUseCase");
+const DetailThreadUseCase = require("../../../../Applications/use_case/threads/DetailThreadUseCase");
 
 class ThreadsHandler {
     constructor(container) {
@@ -8,6 +9,7 @@ class ThreadsHandler {
         this.postThreadHandler = this.postThreadHandler.bind(this);
         this.addCommentHandler = this.addCommentHandler.bind(this);
         this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
+        this.getThreadDetailHandler = this.getThreadDetailHandler.bind(this);
     }
 
     async postThreadHandler(request, h) {
@@ -34,6 +36,20 @@ class ThreadsHandler {
             }
         });
         response.code(201);
+        return response;
+    }
+
+    async getThreadDetailHandler(request, h) {
+        const {threadId} = request.params;
+        const getDetailThreadUseCase = this._container.getInstance(DetailThreadUseCase.name);
+        const detailThread = await getDetailThreadUseCase.execute(threadId);
+        const response = h.response({
+            status: 'success',
+            data: {
+                thread: detailThread,
+            }
+        });
+        response.code(200);
         return response;
     }
 

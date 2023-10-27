@@ -106,7 +106,6 @@ describe('/threads endpoint', () => {
             };
 
             const server = await createServer(container);
-
             const response = await server.inject({
                 method: 'POST',
                 url: '/threads',
@@ -117,6 +116,43 @@ describe('/threads endpoint', () => {
             expect(response.statusCode).toEqual(401);
             expect(responseJson.error).toEqual('Unauthorized');
             expect(responseJson.message).toEqual('Missing authentication');
+        });
+    });
+
+    describe('when GET /threads/{threadId}', () => {
+        it('should response 200 when thread exists', async () => {
+            const requestPayload = {
+                id: 'thread-123',
+                title: 'dicoding',
+                body: 'secret',
+            };
+
+            await UserTableTestHelper.addUser(UserData);
+            await ThreadsTableTestHelper.postThread(requestPayload, UserData.id);
+
+            const server = await createServer(container);
+
+            const response = await server.inject({
+                method: 'GET',
+                url: `/threads/${requestPayload.id}`,
+            });
+
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(200);
+            expect(responseJson.data.thread).toBeDefined();
+        });
+
+        it('should response 404 when thread not exists', async () => {
+            const server = await createServer(container);
+            const response = await server.inject({
+                method: 'GET',
+                url: `/threads/thread-123`,
+            });
+
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(404);
+            expect(responseJson.status).toEqual('fail');
+            expect(responseJson.message).toEqual('thread tidak ditemukan');
         });
     });
 });

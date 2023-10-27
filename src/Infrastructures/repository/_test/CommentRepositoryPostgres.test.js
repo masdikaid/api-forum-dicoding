@@ -62,6 +62,17 @@ describe('CommentRepositoryPostgres', () => {
         });
     });
 
+    describe('get comments by thread id', () => {
+        it('should return comments correctly', async () => {
+            const fakeIdGenerator = () => '123';
+            const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+            await CommentsTableTestHelper.addComment(TEST_DATA);
+            const comments = await commentRepositoryPostgres.getCommentsByThreadId(TEST_DATA.threadId);
+            expect(comments).toHaveLength(1);
+            expect(comments[0].id).toStrictEqual(TEST_DATA.id);
+        });
+    });
+
     describe('delete comment', () => {
         it('should soft delete comment', async () => {
             const fakeIdGenerator = () => '123';

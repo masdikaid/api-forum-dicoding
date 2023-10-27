@@ -27,15 +27,13 @@ describe('a DetailComment entities', () => {
             content: 'abc',
             date: new Date(),
             username: 'abc',
-            owner: 'user-123',
         };
 
-        const {id, content, date, username, owner} = new DetailComment(payload);
+        const {id, content, date, username} = new DetailComment(payload);
 
         expect(id).toEqual(payload.id);
         expect(content).toEqual(payload.content);
         expect(date).toEqual(payload.date);
         expect(username).toEqual(payload.username);
-        expect(owner).toEqual(payload.owner);
     });
 });
