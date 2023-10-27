@@ -36,4 +36,18 @@ describe('a DetailComment entities', () => {
         expect(date).toEqual(payload.date);
         expect(username).toEqual(payload.username);
     });
+
+    it('should change content to be "**komentar telah dihapus**" when deleted_at is not null', () => {
+        const payload = {
+            id: 'thread-123',
+            content: 'abc',
+            date: new Date(),
+            username: 'abc',
+            deleted_at: new Date(),
+        };
+
+        const {content} = new DetailComment(payload);
+
+        expect(content).toEqual("**komentar telah dihapus**");
+    });
 });

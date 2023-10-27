@@ -80,7 +80,7 @@ describe('CommentRepositoryPostgres', () => {
             await CommentsTableTestHelper.addComment(TEST_DATA);
             await commentRepositoryPostgres.deleteComment(TEST_DATA.id);
             const comments = await CommentsTableTestHelper.findCommentsByThreadId(TEST_DATA.threadId);
-            expect(comments).toHaveLength(0);
+            expect(comments[0].deleted_at).not.toBeNull();
         });
     });
 });

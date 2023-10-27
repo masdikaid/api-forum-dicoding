@@ -23,7 +23,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     async getCommentsByThreadId(threadId) {
         const query = {
-            text: 'SELECT comments.*, users.username FROM comments LEFT JOIN users ON comments.owner = users.id WHERE thread_id = $1 AND comments.deleted_at IS NULL',
+            text: 'SELECT comments.*, users.username FROM comments LEFT JOIN users ON comments.owner = users.id WHERE thread_id = $1',
             values: [threadId],
         };
 
@@ -33,7 +33,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     async verifyCommentOwner(commentId, owner) {
         const query = {
-            text: 'SELECT owner FROM comments WHERE id = $1 AND deleted_at IS NULL',
+            text: 'SELECT owner FROM comments WHERE id = $1',
             values: [commentId],
         };
 

@@ -2,12 +2,12 @@ class DetailComment {
     constructor(payload) {
         this._verifyPayload(payload);
 
-        const {id, content, date, username} = payload;
+        const {id, content, date, username, deleted_at} = payload;
 
         this.id = id;
-        this.content = content;
         this.date = date;
         this.username = username;
+        this.content = deleted_at ? "**komentar telah dihapus**" : content;
     }
 
     _verifyPayload({id, content, date, username}) {
