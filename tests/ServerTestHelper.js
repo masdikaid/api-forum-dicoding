@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 const container = require('../src/Infrastructures/container');
 const AuthenticationTableTestHelper = require('./AuthenticationsTableTestHelper');
 const AuthenticationTokenManager = require('../src/Applications/security/AuthenticationTokenManager');
