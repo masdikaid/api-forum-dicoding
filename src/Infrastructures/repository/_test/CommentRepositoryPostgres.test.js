@@ -3,7 +3,7 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
 const pool = require('../../database/postgres/pool');
-const AddedComment = require('../../../Domains/threads/entities/AddedComment');
+const AddedComment = require('../../../Domains/comments/entities/AddedComment');
 
 const TEST_DATA = {
   id: 'comment-123',
@@ -71,6 +71,16 @@ describe('CommentRepositoryPostgres', () => {
       await CommentsTableTestHelper.addComment(TEST_DATA);
       await expect(commentRepositoryPostgres.verifyCommentOwner(TEST_DATA.id, 'user-321'))
         .rejects
+        .toThrowError('VERIFY_COMMENT.OWNER_NOT_MATCH');
+    });
+
+    it('should not throw error when owner match', async () => {
+      const fakeIdGenerator = () => '123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+      await CommentsTableTestHelper.addComment(TEST_DATA);
+      await expect(commentRepositoryPostgres.verifyCommentOwner(TEST_DATA.id, TEST_DATA.owner))
+        .resolves
+        .not
         .toThrowError('VERIFY_COMMENT.OWNER_NOT_MATCH');
     });
   });

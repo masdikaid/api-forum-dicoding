@@ -27,15 +27,15 @@ const LoginUserUseCase = require('../Applications/use_case/auth/LoginUserUseCase
 const LogoutUserUseCase = require('../Applications/use_case/auth/LogoutUserUseCase');
 const PostThreadUseCase = require('../Applications/use_case/threads/PostThreadUseCase');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/auth/RefreshAuthenticationUseCase');
-const CommentRepository = require('../Domains/threads/CommentRepository');
+const CommentRepository = require('../Domains/comments/CommentRepository');
 const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
-const AddCommentUseCase = require('../Applications/use_case/threads/AddCommentUseCase');
-const DeleteCommentUseCase = require('../Applications/use_case/threads/DeleteCommentUseCase');
+const AddCommentUseCase = require('../Applications/use_case/comments/AddCommentUseCase');
+const DeleteCommentUseCase = require('../Applications/use_case/comments/DeleteCommentUseCase');
 const DetailThreadUseCase = require('../Applications/use_case/threads/DetailThreadUseCase');
-const ReplyRepository = require('../Domains/threads/ReplyRepository');
+const ReplyRepository = require('../Domains/replies/ReplyRepository');
 const ReplyRepositoryPostgres = require('./repository/ReplyRepositoryPostgres');
-const AddReplyUseCase = require('../Applications/use_case/threads/AddReplyUseCase');
-const DeleteReplyUseCase = require('../Applications/use_case/threads/DeleteReplyUseCase');
+const AddReplyUseCase = require('../Applications/use_case/replies/AddReplyUseCase');
+const DeleteReplyUseCase = require('../Applications/use_case/replies/DeleteReplyUseCase');
 
 // creating container
 const container = createContainer();

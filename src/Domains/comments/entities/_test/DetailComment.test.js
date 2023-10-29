@@ -7,7 +7,8 @@ describe('a DetailComment entities', () => {
       content: 'abc',
     };
 
-    expect(() => new DetailComment(payload)).toThrowError('DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
+    expect(() => new DetailComment(payload))
+      .toThrowError('DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
   it('should throw error when payload did not meet data type specification', () => {
@@ -19,7 +20,8 @@ describe('a DetailComment entities', () => {
       owner: 123,
     };
 
-    expect(() => new DetailComment(payload)).toThrowError('DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new DetailComment(payload))
+      .toThrowError('DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should create DetailComment object correctly', () => {
@@ -31,13 +33,20 @@ describe('a DetailComment entities', () => {
     };
 
     const {
-      id, content, date, username,
+      id,
+      content,
+      date,
+      username,
     } = new DetailComment(payload);
 
-    expect(id).toEqual(payload.id);
-    expect(content).toEqual(payload.content);
-    expect(date).toEqual(payload.date);
-    expect(username).toEqual(payload.username);
+    expect(id)
+      .toEqual(payload.id);
+    expect(content)
+      .toEqual(payload.content);
+    expect(date)
+      .toEqual(payload.date);
+    expect(username)
+      .toEqual(payload.username);
   });
 
   it('should change content to be "**komentar telah dihapus**" when deleted_at is not null', () => {
@@ -51,6 +60,7 @@ describe('a DetailComment entities', () => {
 
     const { content } = new DetailComment(payload);
 
-    expect(content).toEqual('**komentar telah dihapus**');
+    expect(content)
+      .toEqual('**komentar telah dihapus**');
   });
 });

@@ -1,6 +1,6 @@
-const ReplyRepository = require('../../Domains/threads/ReplyRepository');
-const AddedReply = require('../../Domains/threads/entities/AddedReply');
-const DetailReply = require('../../Domains/threads/entities/DetailReply');
+const ReplyRepository = require('../../Domains/replies/ReplyRepository');
+const AddedReply = require('../../Domains/replies/entities/AddedReply');
+const DetailReply = require('../../Domains/replies/entities/DetailReply');
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {

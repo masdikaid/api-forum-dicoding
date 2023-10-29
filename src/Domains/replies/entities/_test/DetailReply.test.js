@@ -7,7 +7,8 @@ describe('a DetailReply entities', () => {
       content: 'abc',
     };
 
-    expect(() => new DetailReply(payload)).toThrowError('DETAIL_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
+    expect(() => new DetailReply(payload))
+      .toThrowError('DETAIL_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
   it('should throw error when payload did not meet data type specification', () => {
@@ -19,7 +20,8 @@ describe('a DetailReply entities', () => {
       owner: 123,
     };
 
-    expect(() => new DetailReply(payload)).toThrowError('DETAIL_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new DetailReply(payload))
+      .toThrowError('DETAIL_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should create DetailReply object correctly', () => {
@@ -31,13 +33,20 @@ describe('a DetailReply entities', () => {
     };
 
     const {
-      id, content, date, username,
+      id,
+      content,
+      date,
+      username,
     } = new DetailReply(payload);
 
-    expect(id).toEqual(payload.id);
-    expect(content).toEqual(payload.content);
-    expect(date).toEqual(payload.date);
-    expect(username).toEqual(payload.username);
+    expect(id)
+      .toEqual(payload.id);
+    expect(content)
+      .toEqual(payload.content);
+    expect(date)
+      .toEqual(payload.date);
+    expect(username)
+      .toEqual(payload.username);
   });
 
   it('should change content to be "**balasan telah dihapus**" when deleted_at is not null', () => {
@@ -51,6 +60,7 @@ describe('a DetailReply entities', () => {
 
     const { content } = new DetailReply(payload);
 
-    expect(content).toEqual('**balasan telah dihapus**');
+    expect(content)
+      .toEqual('**balasan telah dihapus**');
   });
 });

@@ -1,7 +1,11 @@
-const AddReply = require('../../../Domains/threads/entities/AddReply');
+const AddReply = require('../../../Domains/replies/entities/AddReply');
 
 class AddReplyUseCase {
-  constructor({ replyRepository, commentRepository, threadRepository }) {
+  constructor({
+    replyRepository,
+    commentRepository,
+    threadRepository,
+  }) {
     this._replyRepository = replyRepository;
     this._commentRepository = commentRepository;
     this._threadRepository = threadRepository;

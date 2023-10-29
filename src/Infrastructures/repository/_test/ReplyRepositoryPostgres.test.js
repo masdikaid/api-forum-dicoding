@@ -4,7 +4,7 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
 const pool = require('../../database/postgres/pool');
-const AddedReply = require('../../../Domains/threads/entities/AddedReply');
+const AddedReply = require('../../../Domains/replies/entities/AddedReply');
 
 const TEST_DATA = {
   id: 'reply-123',
@@ -79,6 +79,16 @@ describe('ReplyRepositoryPostgres', () => {
       await RepliesTableTestHelper.addReply(TEST_DATA);
       await expect(replyRepositoryPostgres.verifyReplyOwner(TEST_DATA.id, 'user-321'))
         .rejects
+        .toThrowError('VERIFY_REPLY.OWNER_NOT_MATCH');
+    });
+
+    it('should not throw error when owner match', async () => {
+      const fakeIdGenerator = () => '123';
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+      await RepliesTableTestHelper.addReply(TEST_DATA);
+      await expect(replyRepositoryPostgres.verifyReplyOwner(TEST_DATA.id, TEST_DATA.owner))
+        .resolves
+        .not
         .toThrowError('VERIFY_REPLY.OWNER_NOT_MATCH');
     });
   });

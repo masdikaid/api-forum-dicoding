@@ -1,4 +1,4 @@
-const CommentRepository = require('../../../../Domains/threads/CommentRepository');
+const CommentRepository = require('../../../../Domains/comments/CommentRepository');
 const DeleteCommentUseCase = require('../DeleteCommentUseCase');
 const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 

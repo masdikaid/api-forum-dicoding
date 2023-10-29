@@ -4,7 +4,8 @@ describe('a AddReply entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     const payload = {};
 
-    expect(() => new AddReply(payload)).toThrowError('ADD_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
+    expect(() => new AddReply(payload))
+      .toThrowError('ADD_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
   it('should throw error when payload did not meet data type specification', () => {
@@ -12,7 +13,8 @@ describe('a AddReply entities', () => {
       content: 123,
     };
 
-    expect(() => new AddReply(payload)).toThrowError('ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new AddReply(payload))
+      .toThrowError('ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should create AddReply object correctly', () => {
@@ -21,6 +23,7 @@ describe('a AddReply entities', () => {
     };
 
     const { content } = new AddReply(payload);
-    expect(content).toEqual(payload.content);
+    expect(content)
+      .toEqual(payload.content);
   });
 });
