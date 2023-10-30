@@ -5,6 +5,7 @@ const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelp
 const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
 const pool = require('../../database/postgres/pool');
 const AddedReply = require('../../../Domains/replies/entities/AddedReply');
+const DetailReply = require('../../../Domains/replies/entities/DetailReply');
 
 const TEST_DATA = {
   id: 'reply-123',
@@ -99,10 +100,17 @@ describe('ReplyRepositoryPostgres', () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
       await RepliesTableTestHelper.addReply(TEST_DATA);
       const replies = await replyRepositoryPostgres.getRepliesByCommentId(TEST_DATA.commentId);
+      const firstReply = replies[0];
+
       expect(replies)
         .toHaveLength(1);
-      expect(replies[0].id)
-        .toStrictEqual(TEST_DATA.id);
+      expect(firstReply)
+        .toStrictEqual(new DetailReply({
+          id: TEST_DATA.id,
+          content: TEST_DATA.content,
+          username: 'dicoding',
+          date: firstReply.date
+        }));
     });
   });
 
