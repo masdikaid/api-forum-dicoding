@@ -4,6 +4,7 @@ const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
 const pool = require('../../database/postgres/pool');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
+const DetailComment = require('../../../Domains/comments/entities/DetailComment');
 
 const TEST_DATA = {
   id: 'comment-123',
@@ -91,10 +92,16 @@ describe('CommentRepositoryPostgres', () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
       await CommentsTableTestHelper.addComment(TEST_DATA);
       const comments = await commentRepositoryPostgres.getCommentsByThreadId(TEST_DATA.threadId);
+      const comment = comments[0];
       expect(comments)
         .toHaveLength(1);
-      expect(comments[0].id)
-        .toStrictEqual(TEST_DATA.id);
+      expect(comment)
+        .toStrictEqual(new DetailComment({
+          id: TEST_DATA.id,
+          content: TEST_DATA.content,
+          username: 'dicoding',
+          date: comment.date
+        }));
     });
   });
 
