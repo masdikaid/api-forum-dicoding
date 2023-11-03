@@ -39,7 +39,7 @@ describe('RefreshAuthenticationUseCase', () => {
     mockAuthenticationTokenManager.verifyRefreshToken = jest.fn(() => Promise.resolve());
     mockAuthenticationTokenManager.decodePayload = jest.fn(() => Promise.resolve({
       username: 'dicoding',
-      id: 'user-123'
+      id: 'user-123',
     }));
     mockAuthenticationTokenManager.createAccessToken = jest.fn(() => Promise.resolve('some_new_access_token'));
     // Create the use case instace
@@ -61,7 +61,7 @@ describe('RefreshAuthenticationUseCase', () => {
     expect(mockAuthenticationTokenManager.createAccessToken)
       .toBeCalledWith({
         username: 'dicoding',
-        id: 'user-123'
+        id: 'user-123',
       });
     expect(accessToken)
       .toEqual('some_new_access_token');
