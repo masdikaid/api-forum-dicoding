@@ -28,6 +28,15 @@ const CommentsTableTestHelper = {
   async cleanTable() {
     await pool.query('DELETE FROM comments WHERE 1=1');
   },
+
+  async getCommentLikesCount(commentId) {
+    const query = {
+      text: `SELECT COUNT(*) AS likes FROM comment_likes WHERE comment_id = '${commentId}'`,
+    };
+
+    const result = await pool.query(query);
+    return parseInt(result.rows[0].likes, 10);
+  },
 };
 
 module.exports = CommentsTableTestHelper;

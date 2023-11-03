@@ -137,4 +137,35 @@ describe('CommentRepositoryPostgres', () => {
         .toBeNull();
     });
   });
+
+  describe('like comment', () => {
+    it('should add like comment', async () => {
+      const fakeIdGenerator = () => '123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+      await CommentsTableTestHelper.addComment(TEST_DATA);
+      await commentRepositoryPostgres.likeComment(TEST_DATA.id, TEST_DATA.owner);
+      const likes = await commentRepositoryPostgres.getCommentLikesCount(TEST_DATA.id);
+      const isLiked = await commentRepositoryPostgres
+        .isCommentLikedByUser(TEST_DATA.id, TEST_DATA.owner);
+      expect(isLiked)
+        .toBe(true);
+      expect(likes)
+        .toBe(1);
+    });
+
+    it('should unlike comment', async () => {
+      const fakeIdGenerator = () => '123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+      await CommentsTableTestHelper.addComment(TEST_DATA);
+      await commentRepositoryPostgres.likeComment(TEST_DATA.id, TEST_DATA.owner);
+      await commentRepositoryPostgres.unlikeComment(TEST_DATA.id, TEST_DATA.owner);
+      const likes = await commentRepositoryPostgres.getCommentLikesCount(TEST_DATA.id);
+      const isLiked = await commentRepositoryPostgres
+        .isCommentLikedByUser(TEST_DATA.id, TEST_DATA.owner);
+      expect(isLiked)
+        .toBe(false);
+      expect(likes)
+        .toBe(0);
+    });
+  });
 });
