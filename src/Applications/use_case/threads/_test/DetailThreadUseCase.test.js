@@ -34,13 +34,12 @@ describe('DetailThreadUseCase', () => {
 
   it('should orchestrating the detail thread action correctly', async () => {
     const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
+    const mockReplyRepository = new ReplyRepository();
+
     mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve(detailThread));
     mockThreadRepository.verifyThread = jest.fn(() => Promise.resolve());
-
-    const mockCommentRepository = new CommentRepository();
     mockCommentRepository.getCommentsByThreadId = jest.fn(() => Promise.resolve(detailComment));
-
-    const mockReplyRepository = new ReplyRepository();
     mockReplyRepository.getRepliesByCommentId = jest.fn(() => Promise.resolve([]));
 
     const getDetailThreadUseCase = new DetailThreadUseCase({

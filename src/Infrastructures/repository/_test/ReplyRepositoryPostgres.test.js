@@ -109,7 +109,7 @@ describe('ReplyRepositoryPostgres', () => {
           id: TEST_DATA.id,
           content: TEST_DATA.content,
           username: 'dicoding',
-          date: firstReply.date
+          date: firstReply.date,
         }));
     });
   });

@@ -13,18 +13,13 @@ describe('DeleteReplyUseCase', () => {
     };
 
     const mockThreadRepository = new ThreadRepository();
-    mockThreadRepository.verifyThread = jest.fn()
-      .mockImplementation(() => Promise.resolve());
-
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.verifyComment = jest.fn()
-      .mockImplementation(() => Promise.resolve());
-
     const mockReplyRepository = new ReplyRepository();
-    mockReplyRepository.verifyReplyOwner = jest.fn()
-      .mockImplementation(() => Promise.resolve());
-    mockReplyRepository.deleteReply = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+
+    mockThreadRepository.verifyThread = jest.fn(() => Promise.resolve());
+    mockCommentRepository.verifyComment = jest.fn(() => Promise.resolve());
+    mockReplyRepository.verifyReplyOwner = jest.fn(() => Promise.resolve());
+    mockReplyRepository.deleteReply = jest.fn(() => Promise.resolve());
 
     const deleteReplyUseCase = new DeleteReplyUseCase({
       commentRepository: mockCommentRepository,

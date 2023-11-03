@@ -100,7 +100,7 @@ describe('CommentRepositoryPostgres', () => {
           id: TEST_DATA.id,
           content: TEST_DATA.content,
           username: 'dicoding',
-          date: comment.date
+          date: comment.date,
         }));
     });
   });
