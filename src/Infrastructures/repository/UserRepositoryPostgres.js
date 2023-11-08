@@ -26,7 +26,7 @@ class UserRepositoryPostgres extends UserRepository {
     const {
       username,
       password,
-      fullname
+      fullname,
     } = registerUser;
     const id = `user-${this._idGenerator()}`;
 

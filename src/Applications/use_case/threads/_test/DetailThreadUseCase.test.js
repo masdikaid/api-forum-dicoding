@@ -29,6 +29,7 @@ describe('DetailThreadUseCase', () => {
     username: TEST_DATA.username,
     date: TEST_DATA.date,
     content: TEST_DATA.content,
+    likeCount: 0,
     replies: [],
   }];
 
@@ -40,6 +41,7 @@ describe('DetailThreadUseCase', () => {
     mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve(detailThread));
     mockThreadRepository.verifyThread = jest.fn(() => Promise.resolve());
     mockCommentRepository.getCommentsByThreadId = jest.fn(() => Promise.resolve(detailComment));
+    mockCommentRepository.getCommentLikesCount = jest.fn(() => Promise.resolve(0));
     mockReplyRepository.getRepliesByCommentId = jest.fn(() => Promise.resolve([]));
 
     const getDetailThreadUseCase = new DetailThreadUseCase({

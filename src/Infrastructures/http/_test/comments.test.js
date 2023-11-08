@@ -61,8 +61,10 @@ describe('/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(201);
-      expect(responseJson.data.addedComment).toBeDefined();
+      expect(response.statusCode)
+        .toEqual(201);
+      expect(responseJson.data.addedComment)
+        .toBeDefined();
     });
 
     it('should response 400 when request payload not contain needed property', async () => {
@@ -77,9 +79,12 @@ describe('/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('gagal menambahkan komentar. Mohon isi konten komentar');
+      expect(response.statusCode)
+        .toEqual(400);
+      expect(responseJson.status)
+        .toEqual('fail');
+      expect(responseJson.message)
+        .toEqual('gagal menambahkan komentar. Mohon isi konten komentar');
     });
 
     it('should response 400 when request payload not meet data type specification', async () => {
@@ -97,9 +102,12 @@ describe('/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('gagal menambahkan komentar karena tipe data tidak sesuai');
+      expect(response.statusCode)
+        .toEqual(400);
+      expect(responseJson.status)
+        .toEqual('fail');
+      expect(responseJson.message)
+        .toEqual('gagal menambahkan komentar karena tipe data tidak sesuai');
     });
 
     it('should response 404 when thread not found', async () => {
@@ -117,9 +125,12 @@ describe('/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(404);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('thread tidak ditemukan');
+      expect(response.statusCode)
+        .toEqual(404);
+      expect(responseJson.status)
+        .toEqual('fail');
+      expect(responseJson.message)
+        .toEqual('thread tidak ditemukan');
     });
 
     it('should response 401 when request authentication not contain access token', async () => {
@@ -134,9 +145,12 @@ describe('/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(401);
-      expect(responseJson.error).toEqual('Unauthorized');
-      expect(responseJson.message).toEqual('Missing authentication');
+      expect(response.statusCode)
+        .toEqual(401);
+      expect(responseJson.error)
+        .toEqual('Unauthorized');
+      expect(responseJson.message)
+        .toEqual('Missing authentication');
     });
   });
 
@@ -163,8 +177,10 @@ describe('/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual('success');
+      expect(response.statusCode)
+        .toEqual(200);
+      expect(responseJson.status)
+        .toEqual('success');
     });
 
     it('should response 403 when request from other user', async () => {
@@ -185,9 +201,12 @@ describe('/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(403);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('anda tidak berhak mengakses resource ini');
+      expect(response.statusCode)
+        .toEqual(403);
+      expect(responseJson.status)
+        .toEqual('fail');
+      expect(responseJson.message)
+        .toEqual('anda tidak berhak mengakses resource ini');
     });
 
     it('should response 404 when comment not found', async () => {
@@ -200,9 +219,77 @@ describe('/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(404);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('komentar tidak ditemukan');
+      expect(response.statusCode)
+        .toEqual(404);
+      expect(responseJson.status)
+        .toEqual('fail');
+      expect(responseJson.message)
+        .toEqual('komentar tidak ditemukan');
+    });
+  });
+
+  describe('when PUT /comments/{commentId}/likes', () => {
+    const TEST_DATA = {
+      owner: 'user-123',
+      threadId: 'thread-123',
+      commentId: 'comment-123',
+      content: 'secret',
+    };
+
+    it('should response 200 and like comment', async () => {
+      await CommentsTableTestHelper.addComment({
+        id: TEST_DATA.commentId,
+        threadId: TEST_DATA.threadId,
+        owner: TEST_DATA.owner,
+      });
+      const response = await server.inject({
+        method: 'PUT',
+        url: `/threads/${TEST_DATA.threadId}/comments/${TEST_DATA.commentId}/likes`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      const likesCount = await CommentsTableTestHelper.getCommentLikesCount(TEST_DATA.commentId);
+
+      expect(response.statusCode)
+        .toEqual(200);
+      expect(responseJson.status)
+        .toEqual('success');
+
+      expect(likesCount)
+        .toEqual(1);
+    });
+
+    it('should response 200 and unlike comment', async () => {
+      await CommentsTableTestHelper.addComment({
+        id: TEST_DATA.commentId,
+        threadId: TEST_DATA.threadId,
+        owner: TEST_DATA.owner,
+      });
+
+      const hitLikeEndpoint = async () => await server.inject({
+        method: 'PUT',
+        url: `/threads/${TEST_DATA.threadId}/comments/${TEST_DATA.commentId}/likes`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      await hitLikeEndpoint();
+      const response = await hitLikeEndpoint();
+
+      const responseJson = JSON.parse(response.payload);
+      const likesCount = await CommentsTableTestHelper.getCommentLikesCount(TEST_DATA.commentId);
+
+      expect(response.statusCode)
+        .toEqual(200);
+      expect(responseJson.status)
+        .toEqual('success');
+
+      expect(likesCount)
+        .toEqual(0);
     });
   });
 });
